@@ -10,15 +10,23 @@ namespace SingletonPractise
     public sealed class SingletonImplementaion
     {
         private static SingletonImplementaion Instance = null;
+        private static Object object1 = new object();
         private static int Counter =0;
 
-        public static SingletonImplementaion GetInstance() { 
-        
+        public static SingletonImplementaion GetInstance() {
+
+            // Double Checked Locking, since locking an object can be a costly operation (optional)
             if (Instance == null)
             {
-                Instance = new SingletonImplementaion();
+                lock (object1)
+                {
+                    if (Instance == null)
+                    {
+                        Instance = new SingletonImplementaion();
+                    }
+                }
             }
-            return Instance;    
+            return Instance;
         }
 
         private SingletonImplementaion() {
@@ -31,5 +39,6 @@ namespace SingletonPractise
         
             Console.WriteLine(message); 
         }
+
     }
 }
